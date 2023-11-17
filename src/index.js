@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
+import user_router from './routes/user_router.js'
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,8 @@ db.once("open", function (open) {
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+
+app.use('/api/users', user_router)
 
 app.listen(3000, function () {
   console.log("Server Connected");
