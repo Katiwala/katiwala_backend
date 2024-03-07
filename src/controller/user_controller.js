@@ -15,10 +15,9 @@ export const user_add = async (request, response) => {
     });
 
     //? This will store the data in the database MONGODB
-    // const user_get = await user.save();
-    // response.status(HttpSuccessCodes.Created).json(user_get);
-    console.log(`responded`);
-    // response.status(HttpSuccessCodes.Created).json(user);
+    const user_get = await user.save();
+    response.status(HttpSuccessCodes.Created).json(user_get);
+    response.status(HttpSuccessCodes.Created).json(user);
   } catch (err) {
     response.status(HttpErrorCodes.InternalServerError).json(err);
   }
