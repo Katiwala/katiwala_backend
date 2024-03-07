@@ -1,16 +1,11 @@
 import mongoose from "mongoose";
 
 const users_schema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  fname: {
+  firstName: {
     type: String,
     required: true,
   },
-  lname: {
+  lastName: {
     type: String,
     required: true,
   },
@@ -20,21 +15,23 @@ const users_schema = new mongoose.Schema({
   },
   email: {
     type: String,
+    required: false,
+  },
+  phoneNumber: {
+    type: Number,
     required: true,
+    unique: true,
+  },
+  dateOfBirth: {
+    type: Date,
+    required: false,
   },
   password: {
     type: String,
     required: true,
   },
-  phone_number: {
-    type: Number,
-    required: false,
-  },
-  date_of_birth: {
-    type: Date,
-    required: false,
-  },
-  profile_picture: {
+
+  faceImage: {
     type: String,
     required: false,
   },
@@ -50,15 +47,20 @@ const users_schema = new mongoose.Schema({
     type: Number,
     required: false,
   },
-  is_validated: {
+  verified: {
     type: Boolean,
     required: true,
     default: false,
   },
-  access_level: {
-    type: Boolean,
-    required: true,
-    default: false,
+  role: {
+    type: String,
+    required: false,
+    default: "katiwala",
+  },
+
+  uploadedSkills: {
+    type: Array,
+    required: false,
   },
 });
 
