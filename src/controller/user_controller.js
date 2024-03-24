@@ -3,6 +3,15 @@ import HttpErrorCodes from "../../utils/HttpErrorCodes";
 import HttpSuccessCodes from "../../utils/HttpSuccessCodes";
 import bcrypt from "bcrypt";
 
+const user_exists_validate = async (phoneNumber) => {
+  const userExists = await user_model.findOne({ phoneNumber }).exec();
+  if (userExists) {
+    return "User already exists, please use a different phone number";
+  } else {
+    return "Phone Number is available";
+  }
+};
+
 export const user_add = async (request, response) => {
   const password = request.body.password;
   const salt = await bcrypt.genSalt(10);
@@ -30,6 +39,17 @@ export const user_add = async (request, response) => {
     response.status(HttpSuccessCodes.Created).json(user_get);
   } catch (err) {
     response.status(HttpErrorCodes.InternalServerError).json(err);
+  }
+};
+
+export const user_exists = async (request, response) => {
+  const phoneNumber = request.params.phoneNumber;
+
+  const userExists = await user_model.findOne({ phoneNumber }).exec();
+  if (userExists) {
+    return response.status(HttpSuccessCodes.OK).json({
+      message: "User exists",
+    });
   }
 };
 
