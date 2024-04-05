@@ -62,6 +62,11 @@ const users_schema = new mongoose.Schema({
     type: Array,
     required: false,
   },
+  //add jwtToken
+  jwtToken: {
+    type: String,
+    required: false,
+  },
 });
 
 const user_model = mongoose.model("users", users_schema);
