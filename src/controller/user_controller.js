@@ -4,13 +4,14 @@ import HttpSuccessCodes from "../../utils/HttpSuccessCodes";
 import bcrypt from "bcrypt";
 
 export const user_add = async (request, response) => {
-  const password = request.body.password;
+  const { password, phoneNumber } = request.body;
+  console.log(phoneNumber, password);
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   //we need to check first if the user already exists using the phoneNumber
   const userExists = await user_model
-    .findOne({ phoneNumber: request.body.phoneNumber })
+    .findOne({ phoneNumber: phoneNumber })
     .exec();
 
   if (userExists) {
