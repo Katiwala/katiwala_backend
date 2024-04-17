@@ -28,7 +28,9 @@ export const user_add = async (request, response) => {
 
     //? This will store the data in the database MONGODB
     const user_get = await user.save();
-    response.status(HttpSuccessCodes.Created).json(user_get);
+    response
+      .status(HttpSuccessCodes.Created)
+      .json({ message: "User created successfully" });
   } catch (err) {
     response.status(HttpErrorCodes.InternalServerError).json(err);
   }
@@ -40,7 +42,7 @@ export const user_exists = async (request, response) => {
   const userExists = await user_model.findOne({ phoneNumber }).exec();
   if (userExists) {
     return response.status(HttpSuccessCodes.OK).json({
-      message: "User exists",
+      message: "User already exists please use a different phone number",
     });
   }
 };

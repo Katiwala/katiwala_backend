@@ -52,6 +52,11 @@ const users_schema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  status: {
+    type: String,
+    required: true,
+    default: "active",
+  },
   role: {
     type: String,
     required: false,
