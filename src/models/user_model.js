@@ -9,6 +9,25 @@ const users_schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  phoneNumber: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  verified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  status: {
+    type: String,
+    required: true,
+    default: "active",
+  },
   address: {
     type: String,
     required: false,
@@ -17,18 +36,10 @@ const users_schema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  phoneNumber: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+
   dateOfBirth: {
     type: Date,
     required: false,
-  },
-  password: {
-    type: String,
-    required: true,
   },
 
   faceImage: {
@@ -47,22 +58,11 @@ const users_schema = new mongoose.Schema({
     type: Number,
     required: false,
   },
-  verified: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
-  status: {
-    type: String,
-    required: true,
-    default: "active",
-  },
   role: {
     type: String,
     required: false,
     default: "katiwala",
   },
-
   uploadedSkills: {
     type: Array,
     required: false,

@@ -2,12 +2,12 @@ import user_model from "../models/user_model";
 import HttpErrorCodes from "../../utils/HttpErrorCodes";
 import HttpSuccessCodes from "../../utils/HttpSuccessCodes";
 import bcrypt from "bcrypt";
+import { uploadImage } from "../service/UploadImages";
 
 export const user_add = async (request, response) => {
-  const { password, phoneNumber } = request.body;
-  const data = request.body;
-  console.log(data);
-  console.log(phoneNumber, password);
+  const { password, phoneNumber, documents, uploadedSkills, faceImage } =
+    request.body;
+
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -23,19 +23,27 @@ export const user_add = async (request, response) => {
   }
 
   try {
-    const user = new user_model({
-      ...request.body,
-      password: hashedPassword,
-    });
+    console.log(documents);
+  } catch (error) {
+    response.status(HttpErrorCodes.InternalServerError).json(error);
+  }
 
-    //? This will store the data in the database MONGODB
-    const user_get = await user.save();
-    response.status(200).json(data);
-    response
-      .status(HttpSuccessCodes.Created)
-      .json({ message: "User created successfully" });
+  try {
+    const user = new user_model({ ...request.body, password: hashedPassword });
+    // const user_get = await user.save();
+    response.status(200).json(`User added successfully`);
   } catch (err) {
-    response.status(HttpErrorCodes.InternalServerError).json(err);
+    if (err.code === 11000) {
+      // Handle duplicate key error (unique constraint violation)
+      const field = Object.keys(err.keyPattern)[0];
+      const value = err.keyValue[field];
+      response.status(HttpErrorCodes.Conflict).json({
+        error: `${field} "${value}" already exists. Please provide a unique value.`,
+      });
+    } else {
+      // Handle other errors
+      response.status(HttpErrorCodes.InternalServerError).json(err);
+    }
   }
 };
 
