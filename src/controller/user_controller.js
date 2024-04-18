@@ -22,8 +22,21 @@ export const user_add = async (request, response) => {
     });
   }
 
+  let uploadedDocuments = [];
   try {
-    console.log(documents);
+    const userDocuments = documents[0];
+    console.log(userDocuments);
+    //loop through userDocuments and upload each document
+    //each document consists of an object title, uri, name and mimeType
+
+    const uploadedDocuments = await Promise.all(
+      userDocuments.map(async (document) => {
+        const uploadedDocument = await uploadImage(document);
+        return uploadedDocument;
+      })
+    );
+
+    uploadedDocuments = uploadedDocuments;
   } catch (error) {
     response.status(HttpErrorCodes.InternalServerError).json(error);
   }
@@ -31,7 +44,7 @@ export const user_add = async (request, response) => {
   try {
     const user = new user_model({ ...request.body, password: hashedPassword });
     // const user_get = await user.save();
-    response.status(200).json(`User added successfully`);
+    response.status(200).json(uploadedDocuments);
   } catch (err) {
     if (err.code === 11000) {
       // Handle duplicate key error (unique constraint violation)
