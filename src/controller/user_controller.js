@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 
 export const user_add = async (request, response) => {
   const { password, phoneNumber } = request.body;
+  const data = request.body;
+  console.log(data);
   console.log(phoneNumber, password);
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -28,6 +30,7 @@ export const user_add = async (request, response) => {
 
     //? This will store the data in the database MONGODB
     const user_get = await user.save();
+    response.status(200).json(data);
     response
       .status(HttpSuccessCodes.Created)
       .json({ message: "User created successfully" });
