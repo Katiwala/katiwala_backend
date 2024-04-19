@@ -18,6 +18,7 @@ export const imageUpload = async (request, response) => {
       }
 
       const imageUrl = await uploadImage(file);
+      console.log(imageUrl);
 
       if (!imageUrl) {
         return response.status(500).json({ message: "Error uploading image" });
