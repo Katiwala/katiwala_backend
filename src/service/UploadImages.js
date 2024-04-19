@@ -4,12 +4,15 @@ import app from "../../firebase.js";
 const storage = getStorage(app);
 const storageRef = ref(storage);
 
-export const uploadImage = async (base64Image, fileName) => {
-  const imageRef = ref(storageRef, fileName);
-  const imageByteArray = Uint8Array.from(atob(base64Image), (c) =>
-    c.charCodeAt(0)
-  );
-  await uploadBytes(imageRef, imageByteArray);
-  const imageUrl = await getDownloadURL(imageRef);
-  return imageUrl;
+const uploadImage = async (image) => {
+  try {
+    const imageRef = ref(storageRef, image.originalname);
+    await uploadBytes(imageRef, image.buffer);
+    const url = await getDownloadURL(imageRef);
+    return url;
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+export default uploadImage;

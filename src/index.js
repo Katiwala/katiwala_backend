@@ -5,8 +5,8 @@ import cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import user_router from "./routes/user_router.js";
 import login_router from "./routes/login_router.js";
+import uploadImage from "./routes/uploadImage.js";
 import helmet from "helmet";
-import { limit } from "firebase/firestore";
 
 dotenv.config();
 
@@ -29,6 +29,8 @@ app.use(cookieParser());
 
 app.use("/api/users", user_router);
 app.use("/api/login", login_router);
+app.use("/api/uploadImage", uploadImage);
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
